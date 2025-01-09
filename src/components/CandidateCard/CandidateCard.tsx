@@ -17,7 +17,7 @@ const CandidateCard: FC<CandidateCardProps> = ({ candidateName, betValue, onClic
   <button
     type="button"
     disabled={disabled}
-    className={clsx(s.wrapper, { [s.disabled]: disabled })}
+    className={clsx(s.wrapper, s[candidateName], { [s.disabled]: disabled })}
     onClick={onClick}
   >
     {betValue && <BetValue value={betValue} />}

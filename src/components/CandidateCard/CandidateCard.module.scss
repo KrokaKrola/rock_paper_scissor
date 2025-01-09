@@ -6,7 +6,7 @@
   align-items: flex-end;
   padding: 1.5rem 2rem;
   background: #356f1b;
-  border: 2px solid lighten(#356f1b, 15%);
+  border: 3px solid lighten(#356f1b, 15%);
   border-radius: 8px;
   position: relative;
 }
@@ -20,4 +20,31 @@
   font-size: 3rem;
   text-transform: uppercase;
   color: var(--text-color-main);
+}
+
+.rock {
+  background: var(--rock-main-color);
+  border-color: var(--rock-secondary-color);
+
+  .label {
+    color: var(--rock-secondary-color);
+  }
+}
+
+.paper {
+  background: var(--paper-main-color);
+  border-color: var(--paper-secondary-color);
+
+  .label {
+    color: var(--paper-secondary-color);
+  }
+}
+
+.scissors {
+  background: var(--scissors-main-color);
+  border-color: var(--scissors-secondary-color);
+
+  .label {
+    color: var(--scissors-secondary-color);
+  }
 }
