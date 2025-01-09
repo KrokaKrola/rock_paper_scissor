@@ -1,0 +1,8 @@
+.wrapper {
+  height: calc(100vh - var(--header-height));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-image: linear-gradient(#606060, #2d2d2d);
+}

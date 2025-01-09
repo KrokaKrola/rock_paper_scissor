@@ -1,0 +1,23 @@
+.wrapper {
+  height: var(--header-height);
+  background: var(--black);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5rem;
+}
+
+.element {
+  width: 15rem;
+  text-transform: uppercase;
+  font-size: 2rem;
+  color: var(--text-color-main);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  span {
+    color: var(--white);
+  }
+}

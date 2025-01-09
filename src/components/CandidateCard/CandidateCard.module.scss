@@ -1,0 +1,23 @@
+.wrapper {
+  width: 20rem;
+  height: 15rem;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 1.5rem 2rem;
+  background: #356f1b;
+  border: 2px solid lighten(#356f1b, 15%);
+  border-radius: 8px;
+  position: relative;
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.label {
+  font-size: 3rem;
+  text-transform: uppercase;
+  color: var(--text-color-main);
+}

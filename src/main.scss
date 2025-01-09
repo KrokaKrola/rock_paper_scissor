@@ -1,0 +1,9 @@
+@use './styles/reset';
+@use './styles/variables';
+@use './styles/mixins';
+@use './styles/headers';
+
+body {
+  font-family: sans-serif;
+  font-weight: bold;
+}
