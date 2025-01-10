@@ -1,17 +1,39 @@
-import { GAME_CONFIG } from '@/config/game';
+import { GameCandidate } from '@/config/game';
+import { useAppDispatch } from '@/hooks/useAppDispatch';
+import { useAppSelector } from '@/hooks/useAppSelector';
 
 import s from '@/pages/Home/Home.module.scss';
 
 import { CandidateCard } from '@/components/CandidateCard/CandidateCard';
 
-const gameCandidates = Object.keys(GAME_CONFIG.gameCandidates);
+import { gameBetsSelector } from '@/store/selectors/gameSelectors';
+import { gameSliceActions } from '@/store/slices/gameSlice';
 
-const CandidatesList = () => (
-  <div className={s.gameCandidates}>
-    {gameCandidates.map((gameCandidate) => (
-      <CandidateCard candidateName={gameCandidate} key={gameCandidate} />
-    ))}
-  </div>
-);
+const CandidatesList = () => {
+  const dispatch = useAppDispatch();
+
+  const bets = useAppSelector(gameBetsSelector);
+
+  const handleCandidateCardClick = (candidate: GameCandidate) => {
+    dispatch(
+      gameSliceActions.handleAddBet({
+        candidate,
+      }),
+    );
+  };
+
+  return (
+    <div className={s.gameCandidates}>
+      {bets.map((bet) => (
+        <CandidateCard
+          candidate={bet.candidate}
+          betValue={bet.betValue}
+          key={bet.candidate}
+          onClick={handleCandidateCardClick}
+        />
+      ))}
+    </div>
+  );
+};
 
 export { CandidatesList };
