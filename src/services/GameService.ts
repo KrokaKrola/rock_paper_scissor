@@ -2,6 +2,9 @@ import { GAME_CONFIG, GameCandidate } from '@/config/game';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
 import { getRandomInt } from '@/utils/numbers/getRandomInteger';
 
+import { BetDto } from '@/services/dtos/bet';
+import { BetWithGameResultDto } from '@/services/dtos/betWithGameResult';
+
 class GameService {
   private static gameCandidates = GAME_CONFIG.gameCandidates;
 
@@ -9,32 +12,28 @@ class GameService {
     return Object.keys(this.gameCandidates) as Array<GameCandidate>;
   }
 
-  public static calculateTotalBetValue(elements: Array<{ betValue: number }>): number {
+  public static calculateTotalBetValue(elements: Array<{ value: number }>): number {
     return elements.reduce((prev, item) => {
-      return prev + item.betValue;
+      return prev + item.value;
     }, 0);
   }
 
-  public static calculateTotalBetWithWinConditions(
-    elements: Array<{ betValue: number; result: GameResult }>,
-  ): number {
+  public static calculateTotalBetWithWinConditions(elements: Array<BetWithGameResultDto>): number {
     return elements.reduce((prev, item) => {
       if (item.result === GAME_RESULT.WIN) {
-        return prev + item.betValue;
+        return prev + item.value;
       }
 
       return prev;
     }, 0);
   }
 
-  public static getCandidatesWithBets(
-    bets: Array<{ betValue: number; candidate: GameCandidate }>,
-  ): Array<{ betValue: number; candidate: GameCandidate }> {
-    return [...bets].filter((candidate) => candidate.betValue > 0);
+  public static getCandidatesWithBets(bets: Array<BetDto>): Array<BetDto> {
+    return [...bets].filter((candidate) => candidate.value > 0);
   }
 
   public static isAllowedToPlaceBet(
-    bets: Array<{ candidate: GameCandidate; betValue: number }>,
+    bets: Array<BetDto>,
     balance: number,
     candidate: GameCandidate,
   ): boolean {
@@ -62,16 +61,16 @@ class GameService {
     return candidates[randomCandidate];
   }
 
-  public static determineGameResult(
-    userBets: Array<{ candidate: GameCandidate; betValue: number }>,
+  public static calculateBetsWithGameResults(
+    userBets: Array<BetDto>,
     computerCandidate: GameCandidate,
-  ): Array<{ betValue: number; result: GameResult; candidate: GameCandidate }> {
+  ): Array<BetWithGameResultDto> {
     const userCandidates = this.getCandidatesWithBets(userBets);
 
     return userCandidates.map((userCandidate) => {
       return {
         result: this.compareCandidates(userCandidate.candidate, computerCandidate),
-        betValue: userCandidate.betValue,
+        value: userCandidate.value,
         candidate: userCandidate.candidate,
       };
     });
@@ -94,28 +93,23 @@ class GameService {
     return GAME_RESULT.LOSS;
   }
 
-  private static calculateTieBets(
-    gameResults: Array<{ candidate: GameCandidate; betValue: number; result: GameResult }>,
-  ): number {
+  private static calculateTieBets(gameResults: Array<BetWithGameResultDto>): number {
     return gameResults.reduce((prev, item) => {
       if (item.result === GAME_RESULT.TIE) {
-        return prev + item.betValue;
+        return prev + item.value;
       }
 
       return prev;
     }, 0);
   }
 
-  public static calculateWinValue(
-    gameResults: Array<{ candidate: GameCandidate; betValue: number; result: GameResult }>,
-  ): number {
+  public static calculateWinValue(gameResults: Array<BetWithGameResultDto>): number {
     let betValue: number;
     let tieBets: number = 0;
 
     if (gameResults.length === 1) {
       betValue = this.calculateTotalBetValue(gameResults);
     } else {
-      console.log('calclulate win value for multiple game results.', gameResults);
       betValue = this.calculateTotalBetWithWinConditions(gameResults);
       tieBets = this.calculateTieBets(gameResults);
     }
@@ -125,9 +119,7 @@ class GameService {
     return betValue * multiplier - tieBets;
   }
 
-  public static getFinishedGameState(
-    results: Array<{ betValue: number; result: GameResult }>,
-  ): GameResult {
+  public static getCompletedGameResult(results: Array<{ result: GameResult }>): GameResult {
     if (results.length === 1) {
       return results[0].result;
     }

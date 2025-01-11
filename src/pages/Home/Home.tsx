@@ -26,18 +26,15 @@ const Home = () => {
   const gameStatus = useAppSelector(gameStatusSelector);
 
   const handlePlayClick = () => {
-    const computerCandidate = 'ROCK';
+    // const computerCandidate = 'ROCK';
+    const computerCandidate = GameService.generateComputerCandidate();
 
-    const gameResult = GameService.determineGameResult(userBets, computerCandidate);
+    const gameResult = GameService.calculateBetsWithGameResults(userBets, computerCandidate);
 
     dispatch(gameSliceActions.handleGameStatus(GAME_STATUS.IN_PROGRESS));
 
     setTimeout(() => {
-      dispatch(
-        gameSliceActions.handleFinishGame({
-          gameResult,
-        }),
-      );
+      dispatch(gameSliceActions.handleFinishGame(gameResult));
     }, 10);
   };
 

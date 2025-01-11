@@ -15,11 +15,7 @@ const CandidatesList = () => {
   const bets = useAppSelector(gameBetsSelector);
 
   const handleCandidateCardClick = (candidate: GameCandidate) => {
-    dispatch(
-      gameSliceActions.handleAddBet({
-        candidate,
-      }),
-    );
+    dispatch(gameSliceActions.handleAddBet(candidate));
   };
 
   return (
@@ -27,7 +23,7 @@ const CandidatesList = () => {
       {bets.map((bet) => (
         <CandidateCard
           candidate={bet.candidate}
-          betValue={bet.betValue}
+          betValue={bet.value}
           key={bet.candidate}
           onClick={handleCandidateCardClick}
         />

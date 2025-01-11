@@ -4,83 +4,69 @@ import { GAME_STATUS, GameStatus } from '@/constants/gameStatus';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { GameService } from '@/services/GameService';
+import { BetDto } from '@/services/dtos/bet';
+import { BetWithGameResultDto } from '@/services/dtos/betWithGameResult';
 
 interface GameState {
   balance: number;
-  betValue: number;
-  bets: Array<{ candidate: GameCandidate; betValue: number }>;
+  bets: Array<BetDto>;
   status: GameStatus;
   winValue: number;
-  gameResult: GameResult | null;
+  result: GameResult | null;
 }
 
 const GAME_SLICE_NAME = 'game';
 
 const initialState: GameState = {
   balance: GAME_CONFIG.initialBalance,
-  betValue: GAME_CONFIG.betValue,
   bets: GameService.getGameCandidates().map((candidate) => ({
     candidate,
-    betValue: 0,
+    value: 0,
   })),
   status: GAME_STATUS.WAITING_FOR_BETS,
   winValue: 0,
-  gameResult: null,
+  result: null,
 };
 
 const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
   name: GAME_SLICE_NAME,
   initialState,
   reducers: {
-    handleAddBet: (state, action: PayloadAction<{ candidate: GameCandidate }>) => {
+    handleAddBet: (state, { payload }: PayloadAction<GameCandidate>) => {
       const isAllowedToPlaceBet = GameService.isAllowedToPlaceBet(
         state.bets,
         state.balance,
-        action.payload.candidate,
+        payload,
       );
 
       if (!isAllowedToPlaceBet) {
         return;
       }
 
-      const candidateIndex = state.bets.findIndex(
-        (item) => item.candidate === action.payload.candidate,
-      );
+      const candidateIndex = state.bets.findIndex((item) => item.candidate === payload);
 
       state.bets[candidateIndex] = {
         ...state.bets[candidateIndex],
-        betValue: state.bets[candidateIndex].betValue + GAME_CONFIG.betValue,
+        value: state.bets[candidateIndex].value + GAME_CONFIG.betValue,
       };
     },
-    handleFinishGame: (
-      state,
-      {
-        payload: { gameResult },
-      }: PayloadAction<{
-        gameResult: Array<{ candidate: GameCandidate; betValue: number; result: GameResult }>;
-      }>,
-    ) => {
-      const result = GameService.getFinishedGameState(gameResult);
+    handleFinishGame: (state, { payload }: PayloadAction<Array<BetWithGameResultDto>>) => {
+      const result = GameService.getCompletedGameResult(payload);
 
       if (result === GAME_RESULT.WIN) {
-        alert('win');
-        state.winValue += GameService.calculateWinValue(gameResult);
-      } else if (result === GAME_RESULT.TIE) {
-        alert('tie');
-      } else {
-        alert('loss');
+        state.winValue += GameService.calculateWinValue(payload);
       }
 
       state.status = GAME_STATUS.FINISHED;
-      state.gameResult = result;
+      state.result = result;
     },
     handleGameStatus: (state, action: PayloadAction<GameStatus>) => {
       state.status = action.payload;
     },
     handleResetGame: (state) => {
-      if (state.gameResult === GAME_RESULT.WIN) {
+      if (state.result === GAME_RESULT.WIN) {
         state.balance += state.winValue;
-      } else if (state.gameResult === GAME_RESULT.LOSS) {
+      } else if (state.result === GAME_RESULT.LOSS) {
         const betValue = GameService.calculateTotalBetValue(state.bets);
         state.balance -= betValue;
       }
@@ -88,7 +74,7 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
       state.bets = initialState.bets;
       state.winValue = initialState.winValue;
       state.status = initialState.status;
-      state.gameResult = initialState.gameResult;
+      state.result = initialState.result;
     },
   },
 });
