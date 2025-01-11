@@ -1,4 +1,4 @@
-@use "sass:color";
+@use 'sass:color';
 
 .wrapper {
   width: 20rem;
@@ -8,14 +8,32 @@
   align-items: flex-end;
   padding: 1.5rem 2rem;
   background: #356f1b;
-  border: 3px solid color.adjust(#356f1b, $lightness: 15%);
   border-radius: 8px;
   position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 3px solid color.adjust(#356f1b, $lightness: 15%);
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    border-radius: inherit;
+  }
 }
 
 .disabled {
   pointer-events: none;
   opacity: 0.6;
+}
+
+.winner {
+  &:after {
+    border-width: 6px;
+  }
 }
 
 .label {
@@ -24,29 +42,38 @@
   color: var(--text-color-main);
 }
 
-.rock {
+.ROCK {
   background: var(--rock-main-color);
-  border-color: var(--rock-secondary-color);
 
   .label {
     color: var(--rock-secondary-color);
   }
+
+  &:after {
+    border-color: var(--rock-secondary-color);
+  }
 }
 
-.paper {
+.PAPER {
   background: var(--paper-main-color);
-  border-color: var(--paper-secondary-color);
 
   .label {
     color: var(--paper-secondary-color);
   }
+
+  &:after {
+    border-color: var(--paper-secondary-color);
+  }
 }
 
-.scissors {
+.SCISSORS {
   background: var(--scissors-main-color);
-  border-color: var(--scissors-secondary-color);
 
   .label {
     color: var(--scissors-secondary-color);
+  }
+
+  &:after {
+    border-color: var(--scissors-secondary-color);
   }
 }

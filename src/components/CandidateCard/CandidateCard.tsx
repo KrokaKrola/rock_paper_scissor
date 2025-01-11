@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { GameCandidate } from '@/config/game';
+import { GameCandidate } from '@/constants/gameCandidates';
 import clsx from 'clsx';
 
 import { BetValue } from '@/components/CandidateCard/BetValue/BetValue';
@@ -12,18 +12,31 @@ interface CandidateCardProps {
   disabled?: boolean;
   onClick?: (candidate: GameCandidate) => void;
   betValue?: number;
+  isWinner?: boolean;
 }
 
-const CandidateCard: FC<CandidateCardProps> = ({ candidate, betValue, onClick, disabled }) => (
-  <button
-    type="button"
-    disabled={disabled}
-    className={clsx(s.wrapper, s[candidate], { [s.disabled]: disabled })}
-    onClick={() => onClick?.(candidate)}
-  >
-    <BetValue value={betValue} />
-    <span className={s.label}>{candidate}</span>
-  </button>
-);
+const CandidateCard: FC<CandidateCardProps> = ({
+  candidate,
+  betValue,
+  onClick,
+  disabled,
+  isWinner,
+}) => {
+  const handleClick = () => {
+    onClick?.(candidate);
+  };
+
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      className={clsx(s.wrapper, s[candidate], { [s.disabled]: disabled, [s.winner]: isWinner })}
+      onClick={handleClick}
+    >
+      <BetValue value={betValue} />
+      <span className={s.label}>{candidate}</span>
+    </button>
+  );
+};
 
 export { CandidateCard };

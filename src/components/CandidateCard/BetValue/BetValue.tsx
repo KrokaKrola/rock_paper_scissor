@@ -1,5 +1,7 @@
 import { FC } from 'react';
 
+import clsx from 'clsx';
+
 import s from './BetValue.module.scss';
 
 interface BetValueProps {
@@ -15,7 +17,18 @@ const BetValue: FC<BetValueProps> = ({ value }) => {
     return null;
   }
 
-  return <span className={s.wrapper}>{value}</span>;
+  const valueLength = value.toString().length;
+
+  return (
+    <span
+      className={clsx(s.wrapper, {
+        [s.medium]: valueLength >= 4 && valueLength < 6,
+        [s.small]: valueLength >= 6,
+      })}
+    >
+      {value}
+    </span>
+  );
 };
 
 export { BetValue };

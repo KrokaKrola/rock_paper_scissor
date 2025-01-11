@@ -1,8 +1,11 @@
-import { GAME_CONFIG, GameCandidate } from '@/config/game';
+import { GAME_CONFIG } from '@/config/gameConfig';
+import { GameCandidate } from '@/constants/gameCandidates';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
 import { GAME_STATUS, GameStatus } from '@/constants/gameStatus';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
+import { BetService } from '@/services/BetService';
+import { CandidatesService } from '@/services/CandidatesService';
 import { GameService } from '@/services/GameService';
 import { BetDto } from '@/services/dtos/bet';
 import { BetWithGameResultDto } from '@/services/dtos/betWithGameResult';
@@ -10,22 +13,26 @@ import { BetWithGameResultDto } from '@/services/dtos/betWithGameResult';
 interface GameState {
   balance: number;
   bets: Array<BetDto>;
+  betsWithGameResultDto: Array<BetWithGameResultDto>;
   status: GameStatus;
   winValue: number;
   result: GameResult | null;
+  computerCandidate: GameCandidate | null;
 }
 
 const GAME_SLICE_NAME = 'game';
 
 const initialState: GameState = {
   balance: GAME_CONFIG.initialBalance,
-  bets: GameService.getGameCandidates().map((candidate) => ({
+  bets: CandidatesService.getGameCandidates().map((candidate) => ({
     candidate,
     value: 0,
   })),
+  betsWithGameResultDto: [],
   status: GAME_STATUS.WAITING_FOR_BETS,
   winValue: 0,
   result: null,
+  computerCandidate: null,
 };
 
 const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
@@ -33,7 +40,7 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
   initialState,
   reducers: {
     handleAddBet: (state, { payload }: PayloadAction<GameCandidate>) => {
-      const isAllowedToPlaceBet = GameService.isAllowedToPlaceBet(
+      const isAllowedToPlaceBet = BetService.isAllowedToPlaceBet(
         state.bets,
         state.balance,
         payload,
@@ -43,38 +50,52 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
         return;
       }
 
-      const candidateIndex = state.bets.findIndex((item) => item.candidate === payload);
+      const betCandidateIdx = state.bets.findIndex((item) => item.candidate === payload);
 
-      state.bets[candidateIndex] = {
-        ...state.bets[candidateIndex],
-        value: state.bets[candidateIndex].value + GAME_CONFIG.betValue,
+      state.bets[betCandidateIdx] = {
+        ...state.bets[betCandidateIdx],
+        value: state.bets[betCandidateIdx].value + GAME_CONFIG.betValue,
       };
     },
-    handleFinishGame: (state, { payload }: PayloadAction<Array<BetWithGameResultDto>>) => {
-      const result = GameService.getCompletedGameResult(payload);
+    handleGameStart: (state) => {
+      state.status = GAME_STATUS.IN_PROGRESS;
+      state.computerCandidate = CandidatesService.generateComputerCandidate();
+      // state.computerCandidate = 'ROCK';
+
+      state.betsWithGameResultDto = BetService.calculateBetsWithGameResults(
+        state.bets,
+        state.computerCandidate,
+      );
+    },
+    handleFinishGame: (state) => {
+      const result = GameService.getCompletedGameResult(state.betsWithGameResultDto);
 
       if (result === GAME_RESULT.WIN) {
-        state.winValue += GameService.calculateWinValue(payload);
+        state.winValue = GameService.calculateWinValue(state.betsWithGameResultDto);
       }
 
       state.status = GAME_STATUS.FINISHED;
       state.result = result;
     },
-    handleGameStatus: (state, action: PayloadAction<GameStatus>) => {
-      state.status = action.payload;
-    },
     handleResetGame: (state) => {
       if (state.result === GAME_RESULT.WIN) {
-        state.balance += state.winValue;
+        state.balance += GameService.calculateNewBalance(
+          state.winValue,
+          state.betsWithGameResultDto,
+        );
       } else if (state.result === GAME_RESULT.LOSS) {
-        const betValue = GameService.calculateTotalBetValue(state.bets);
-        state.balance -= betValue;
+        state.balance -= BetService.calculateTotalBetValue(state.bets);
       }
 
       state.bets = initialState.bets;
       state.winValue = initialState.winValue;
       state.status = initialState.status;
       state.result = initialState.result;
+      state.betsWithGameResultDto = initialState.betsWithGameResultDto;
+      state.computerCandidate = initialState.computerCandidate;
+    },
+    handleCancelBets: (state) => {
+      state.bets = initialState.bets;
     },
   },
 });

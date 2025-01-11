@@ -1,130 +1,40 @@
-import { GAME_CONFIG, GameCandidate } from '@/config/game';
+import { GAME_CONFIG } from '@/config/gameConfig';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
-import { getRandomInt } from '@/utils/numbers/getRandomInteger';
 
-import { BetDto } from '@/services/dtos/bet';
+import { BetService } from '@/services/BetService';
 import { BetWithGameResultDto } from '@/services/dtos/betWithGameResult';
 
 class GameService {
-  private static gameCandidates = GAME_CONFIG.gameCandidates;
-
-  public static getGameCandidates(): Array<GameCandidate> {
-    return Object.keys(this.gameCandidates) as Array<GameCandidate>;
-  }
-
-  public static calculateTotalBetValue(elements: Array<{ value: number }>): number {
-    return elements.reduce((prev, item) => {
-      return prev + item.value;
-    }, 0);
-  }
-
-  public static calculateTotalBetWithWinConditions(elements: Array<BetWithGameResultDto>): number {
-    return elements.reduce((prev, item) => {
-      if (item.result === GAME_RESULT.WIN) {
-        return prev + item.value;
-      }
-
-      return prev;
-    }, 0);
-  }
-
-  public static getCandidatesWithBets(bets: Array<BetDto>): Array<BetDto> {
-    return [...bets].filter((candidate) => candidate.value > 0);
-  }
-
-  public static isAllowedToPlaceBet(
-    bets: Array<BetDto>,
-    balance: number,
-    candidate: GameCandidate,
-  ): boolean {
-    const candidates = this.getCandidatesWithBets(bets);
-
-    const totalBetAmount = this.calculateTotalBetValue(candidates);
-
-    if (totalBetAmount + GAME_CONFIG.betValue > balance) {
-      return false;
+  public static calculateNewBalance(win: number, bets: Array<BetWithGameResultDto>): number {
+    if (bets.length === 1) {
+      return win;
     }
 
-    const hasCandidate = candidates.find((item) => item.candidate === candidate);
-
-    if (hasCandidate) {
-      return true;
-    }
-
-    return candidates.length < GAME_CONFIG.maximumSimultaneousCandidates;
+    return win - BetService.calculateTotalBetByGameResult(bets, GAME_RESULT.TIE);
   }
 
-  public static generateComputerCandidate(): GameCandidate {
-    const candidates = this.getGameCandidates();
-    const randomCandidate = getRandomInt(0, candidates.length - 1);
-
-    return candidates[randomCandidate];
-  }
-
-  public static calculateBetsWithGameResults(
-    userBets: Array<BetDto>,
-    computerCandidate: GameCandidate,
-  ): Array<BetWithGameResultDto> {
-    const userCandidates = this.getCandidatesWithBets(userBets);
-
-    return userCandidates.map((userCandidate) => {
-      return {
-        result: this.compareCandidates(userCandidate.candidate, computerCandidate),
-        value: userCandidate.value,
-        candidate: userCandidate.candidate,
-      };
-    });
-  }
-
-  private static compareCandidates(
-    userCandidate: GameCandidate,
-    computerCandidate: GameCandidate,
-  ): GameResult {
-    if (userCandidate === computerCandidate) {
-      return GAME_RESULT.TIE;
-    }
-
-    const winners = this.gameCandidates[userCandidate];
-
-    if (winners.includes(computerCandidate)) {
-      return GAME_RESULT.WIN;
-    }
-
-    return GAME_RESULT.LOSS;
-  }
-
-  private static calculateTieBets(gameResults: Array<BetWithGameResultDto>): number {
-    return gameResults.reduce((prev, item) => {
-      if (item.result === GAME_RESULT.TIE) {
-        return prev + item.value;
-      }
-
-      return prev;
-    }, 0);
-  }
-
-  public static calculateWinValue(gameResults: Array<BetWithGameResultDto>): number {
+  public static calculateWinValue(betsWithGameResults: Array<BetWithGameResultDto>): number {
     let betValue: number;
-    let tieBets: number = 0;
 
-    if (gameResults.length === 1) {
-      betValue = this.calculateTotalBetValue(gameResults);
+    if (betsWithGameResults.length === 1) {
+      betValue = BetService.calculateTotalBetValue(betsWithGameResults);
     } else {
-      betValue = this.calculateTotalBetWithWinConditions(gameResults);
-      tieBets = this.calculateTieBets(gameResults);
+      betValue = BetService.calculateTotalBetByGameResult(betsWithGameResults, GAME_RESULT.WIN);
     }
 
-    const multiplier = GAME_CONFIG.winningRates[gameResults.length];
+    const multiplier = GAME_CONFIG.winningRates[betsWithGameResults.length];
 
-    return betValue * multiplier - tieBets;
+    return betValue * multiplier;
   }
 
-  public static getCompletedGameResult(results: Array<{ result: GameResult }>): GameResult {
-    if (results.length === 1) {
-      return results[0].result;
+  public static getCompletedGameResult(
+    betsWithGameResults: Array<BetWithGameResultDto>,
+  ): GameResult {
+    if (betsWithGameResults.length === 1) {
+      return betsWithGameResults[0].result;
     }
 
-    const hasWins = results.some((result) => result.result === GAME_RESULT.WIN);
+    const hasWins = betsWithGameResults.some((result) => result.result === GAME_RESULT.WIN);
 
     if (hasWins) {
       return GAME_RESULT.WIN;

@@ -1,9 +1,28 @@
 .wrapper {
   position: absolute;
   border-radius: 50%;
-  top: 3rem;
+  top: 2rem;
   border: 4px solid blue;
   padding: 0.4rem;
   background: var(--white);
   font-size: 2rem;
+  width: 5rem;
+  height: 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.medium {
+  width: 5.5rem;
+  height: 5.5rem;
+  font-size: 1.5rem;
+  border-color: purple;
+}
+
+.small {
+  width: 6rem;
+  height: 6rem;
+  font-size: 1.3rem;
+  border-color: gold;
 }

@@ -1,4 +1,4 @@
-import { GameCandidate } from '@/config/game';
+import { GameCandidate } from '@/constants/gameCandidates';
 
 export interface BetDto {
   candidate: GameCandidate;

@@ -1,0 +1,50 @@
+.wrapper {
+  height: 20rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+.candidatesLine {
+  color: var(--white);
+  display: flex;
+  gap: 4rem;
+
+  span {
+    color: var(--text-color-main);
+  }
+}
+
+.winLine {
+  color: var(--text-color-main);
+}
+
+.tieLine {
+  color: var(--white);
+}
+
+.lossLine {
+  color: var(--black);
+}
+
+.playerWinLine {
+  color: var(--text-color-main);
+}
+
+.pickPositionsCta {
+  margin-top: auto;
+  color: var(--text-color-main);
+  text-transform: uppercase;
+}
+
+.ROCK {
+  color: var(--rock-secondary-color);
+}
+
+.PAPER {
+  color: var(--paper-secondary-color);
+}
+
+.SCISSORS {
+  color: var(--scissors-secondary-color);
+}
