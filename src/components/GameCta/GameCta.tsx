@@ -19,9 +19,9 @@ const GameCta = () => {
   const handlePlayClick = () => {
     dispatch(gameSliceActions.handleGameStart());
 
-    setTimeout(() => {
-      dispatch(gameSliceActions.handleFinishGame());
-    }, 1000);
+    // setTimeout(() => {
+    //   dispatch(gameSliceActions.handleFinishGame());
+    // }, 3200);
   };
 
   const handleCancelBets = () => {
@@ -30,7 +30,7 @@ const GameCta = () => {
 
   if (finished) {
     return (
-      <Button type="button" onClick={handleGameReset}>
+      <Button testId="reset-game" type="button" onClick={handleGameReset}>
         Reset
       </Button>
     );
@@ -39,10 +39,10 @@ const GameCta = () => {
   if (waitingForBets && gameTotalBet > 0) {
     return (
       <div style={{ display: 'flex', gap: '2rem' }}>
-        <Button type="button" onClick={handleCancelBets}>
+        <Button testId="cancel-game" type="button" onClick={handleCancelBets}>
           Cancel
         </Button>
-        <Button type="button" onClick={handlePlayClick}>
+        <Button data-testid="play-game" type="button" onClick={handlePlayClick}>
           Play
         </Button>
       </div>
@@ -50,7 +50,7 @@ const GameCta = () => {
   }
 
   return (
-    <Button type="button" disabled={gameTotalBet === 0 || inProgress}>
+    <Button data-testid="play-game" type="button" disabled={gameTotalBet === 0 || inProgress}>
       Play
     </Button>
   );

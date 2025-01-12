@@ -1,4 +1,5 @@
 import { GameCandidate } from '@/constants/gameCandidates';
+import { useAllowedToBetCandidates } from '@/hooks/useAllowedToBetCandidates';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
 
@@ -13,6 +14,8 @@ const CandidatesList = () => {
   const dispatch = useAppDispatch();
 
   const bets = useAppSelector(gameBetsSelector);
+
+  const allowedToBetCandidates = useAllowedToBetCandidates();
 
   const handleCandidateCardClick = (candidate: GameCandidate) => {
     dispatch(gameSliceActions.handleAddBet(candidate));
@@ -29,6 +32,8 @@ const CandidatesList = () => {
           key={bet.candidate}
           onClick={handleCandidateCardClick}
           isWinner={bet.candidate === gameWinnerCandidate}
+          testId={`${bet.candidate}-card`}
+          disabled={!allowedToBetCandidates.includes(bet.candidate)}
         />
       ))}
     </div>

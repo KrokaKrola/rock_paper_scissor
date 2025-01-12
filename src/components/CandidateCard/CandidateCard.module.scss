@@ -10,6 +10,8 @@
   background: #356f1b;
   border-radius: 8px;
   position: relative;
+  opacity: 0.93;
+  transition: opacity 0.25s ease-in;
 
   &:after {
     content: '';
@@ -22,6 +24,7 @@
     bottom: 0;
     right: 0;
     border-radius: inherit;
+    transition: border-width 0.25s ease-in;
   }
 }
 

@@ -40,16 +40,6 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
   initialState,
   reducers: {
     handleAddBet: (state, { payload }: PayloadAction<GameCandidate>) => {
-      const isAllowedToPlaceBet = BetService.isAllowedToPlaceBet(
-        state.bets,
-        state.balance,
-        payload,
-      );
-
-      if (!isAllowedToPlaceBet) {
-        return;
-      }
-
       const betCandidateIdx = state.bets.findIndex((item) => item.candidate === payload);
 
       state.bets[betCandidateIdx] = {

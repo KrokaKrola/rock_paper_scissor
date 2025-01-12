@@ -11,18 +11,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  color: var(--black);
+  transition: font-size 0.25s ease-in;
 }
 
 .medium {
-  width: 5.5rem;
-  height: 5.5rem;
+  //width: 5.5rem;
+  //height: 5.5rem;
   font-size: 1.5rem;
   border-color: purple;
-}
-
-.small {
-  width: 6rem;
-  height: 6rem;
-  font-size: 1.3rem;
-  border-color: gold;
 }

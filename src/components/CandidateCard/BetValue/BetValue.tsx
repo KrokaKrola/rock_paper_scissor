@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import clsx from 'clsx';
+import { AnimatePresence, motion } from 'motion/react';
 
 import s from './BetValue.module.scss';
 
@@ -9,25 +10,22 @@ interface BetValueProps {
 }
 
 const BetValue: FC<BetValueProps> = ({ value }) => {
-  if (!value) {
-    return null;
-  }
-
-  if (value === 0) {
-    return null;
-  }
-
-  const valueLength = value.toString().length;
-
   return (
-    <span
-      className={clsx(s.wrapper, {
-        [s.medium]: valueLength >= 4 && valueLength < 6,
-        [s.small]: valueLength >= 6,
-      })}
-    >
-      {value}
-    </span>
+    <AnimatePresence>
+      {!!value && value > 0 && (
+        <motion.span
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0.7, translateY: 5 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className={clsx(s.wrapper, {
+            [s.medium]: value.toString().length >= 4 && value.toString().length < 6,
+            // [s.small]: valueLength >= 6,
+          })}
+        >
+          {value}
+        </motion.span>
+      )}
+    </AnimatePresence>
   );
 };
 

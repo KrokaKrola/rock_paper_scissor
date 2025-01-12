@@ -1,4 +1,9 @@
+import { FC } from 'react';
+
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { PropsWithTestId } from '@/types/utils';
+
+import { AnimatedNumber } from '@/components/AnimatedNumber/AnimatedNumber';
 
 import {
   gameBalanceSelector,
@@ -8,24 +13,31 @@ import {
 
 import s from './Header.module.scss';
 
+const StatisticItem: FC<PropsWithTestId<{ label: string; value: number }>> = ({
+  label,
+  value,
+  testId,
+}) => {
+  return (
+    <p className={s.element} data-testid={testId}>
+      {label}:{' '}
+      <span>
+        <AnimatedNumber animateToNumber={value} />
+      </span>
+    </p>
+  );
+};
+
 const Header = () => {
   const gameBalance = useAppSelector(gameBalanceSelector);
-
   const betValue = useAppSelector(gameTotalBetValueSelector);
-
   const winValue = useAppSelector(gameWinValueSelector);
 
   return (
     <header className={s.wrapper}>
-      <p className={s.element}>
-        BALANCE: <span>{gameBalance}</span>
-      </p>
-      <p className={s.element}>
-        BET: <span>{betValue}</span>
-      </p>
-      <p className={s.element}>
-        WIN: <span>{winValue}</span>
-      </p>
+      <StatisticItem testId="balance" label="BALANCE" value={gameBalance - betValue} />
+      <StatisticItem testId="bet" label="BET" value={betValue} />
+      <StatisticItem testId="win" label="WIN" value={winValue} />
     </header>
   );
 };
