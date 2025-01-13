@@ -1,50 +1,28 @@
-# React + TypeScript + Vite
+# Test task specification:
+Your test task is to create a React app, using Typescript with strict typing.
+The app is a scissors, rock, paper game, with the ability to bet on the winning position.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Specifications
+- Player starts with a balance of 5000.
+- Each bet should be 500 (player can place several bets on any position: 500, 1000,
+  1500 etc)
+- Player can not bet more than 2 positions per one game
+- Winning rate for bet on 1 position is 14
+- Winning rate for bet on 2 positions is 3
 
-Currently, two official plugins are available:
+## Requirements
+- There should be three betting positions, rock, paper, scissors.
+- Player can bet on rock, paper, or scissors, but not on all three at the same time.
+- The bet is reduced from the balance.
+- When betting done button is clicked, the computer runs a random paper, scissors,
+  rock match.
+- Player choice should be compared to computers choice and only one bet can win –
+  every tie counts as loss
+- If player bets on one of them and wins, the return is 14 times the bet.
+- If player bets on two of them and wins the return is 3 times the bet.
+- Loss bets are not returned to player
+- Bets with tie result are returned to player
+- After round ends the return adds to the balance
+- Player cannot bet if player has less balance than available for bet.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
-```
-
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from "eslint-plugin-react";
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: "18.3" } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs["jsx-runtime"].rules,
-  },
-});
-```
+NB please keep in mind that Title ROCK vs PAPER on the second screen means “computer choice ROCK versus player choice PAPER” — not ROCK bet vs PAPER bet.
