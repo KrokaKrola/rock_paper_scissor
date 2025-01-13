@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { useIsTestEnv } from '@/hooks/useIsTestEnv';
 import clsx from 'clsx';
 import { Transition, motion, useAnimation, useInView } from 'motion/react';
 
@@ -18,6 +19,7 @@ interface Props {
 const AnimatedNumber = ({ className, animateToNumber, transitions }: Props) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const isTestEnv = useIsTestEnv();
 
   const controls = useAnimation();
   const animateToNumberString = String(Math.abs(animateToNumber));
@@ -43,6 +45,10 @@ const AnimatedNumber = ({ className, animateToNumber, transitions }: Props) => {
       controls.start('visible');
     }
   }, [isInView, animateToNumber, controls]);
+
+  if (isTestEnv) {
+    return animateToNumber;
+  }
 
   return (
     <span ref={ref}>

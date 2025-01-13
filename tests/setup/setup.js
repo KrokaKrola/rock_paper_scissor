@@ -5,3 +5,12 @@ import { afterEach } from 'vitest';
 afterEach(() => {
   cleanup();
 });
+
+class IntersectionObserverMock {
+  observe = vi.fn();
+  unobserve = vi.fn();
+  disconnect = vi.fn();
+}
+
+vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+vi.stubGlobal('vitest', true);

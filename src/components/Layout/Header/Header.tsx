@@ -19,9 +19,9 @@ const StatisticItem: FC<PropsWithTestId<{ label: string; value: number }>> = ({
   testId,
 }) => {
   return (
-    <div className={s.element} data-testid={testId}>
+    <div className={s.element}>
       {label}:{' '}
-      <span>
+      <span data-testid={testId}>
         <AnimatedNumber animateToNumber={value} />
       </span>
     </div>
