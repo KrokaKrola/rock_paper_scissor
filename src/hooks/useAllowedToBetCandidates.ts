@@ -2,24 +2,21 @@ import { useMemo } from 'react';
 
 import { GAME_CONFIG } from '@/config/gameConfig';
 import { GAME_CANDIDATES } from '@/constants/gameCandidates';
-import { GAME_STATUS } from '@/constants/gameStatus';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { useGameStatus } from '@/hooks/useGameStatus';
 
-import {
-  gameBalanceSelector,
-  gameBetsSelector,
-  gameStatusSelector,
-} from '@/store/selectors/gameSelectors';
+import { gameBalanceSelector, gameBetsSelector } from '@/store/selectors/gameSelectors';
 
 import { BetService } from '@/services/BetService';
 
 const useAllowedToBetCandidates = () => {
   const bets = useAppSelector(gameBetsSelector);
   const balance = useAppSelector(gameBalanceSelector);
-  const gameStatus = useAppSelector(gameStatusSelector);
+
+  const { inProgress, finished } = useGameStatus();
 
   return useMemo(() => {
-    if (GAME_STATUS.IN_PROGRESS === gameStatus || GAME_STATUS.FINISHED === gameStatus) {
+    if (inProgress || finished) {
       return [];
     }
 
@@ -34,7 +31,7 @@ const useAllowedToBetCandidates = () => {
     }
 
     return [GAME_CANDIDATES.ROCK, GAME_CANDIDATES.PAPER, GAME_CANDIDATES.SCISSORS];
-  }, [balance, bets, gameStatus]);
+  }, [balance, bets, finished, inProgress]);
 };
 
 export { useAllowedToBetCandidates };

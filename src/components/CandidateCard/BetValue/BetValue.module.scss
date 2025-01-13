@@ -1,4 +1,7 @@
+@use '@/styles/mixins' as *;
+
 .wrapper {
+  @include center-flex;
   position: absolute;
   border-radius: 50%;
   top: 2rem;
@@ -8,16 +11,11 @@
   font-size: 2rem;
   width: 5rem;
   height: 5rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   color: var(--black);
   transition: font-size 0.25s ease-in;
 }
 
 .medium {
-  //width: 5.5rem;
-  //height: 5.5rem;
   font-size: 1.5rem;
   border-color: purple;
 }

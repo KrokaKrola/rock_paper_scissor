@@ -1,0 +1,17 @@
+@mixin center-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin candidate-card-coloring($main-color, $secondary-color) {
+  background: $main-color;
+
+  :global(.label) {
+    color: $secondary-color;
+  }
+
+  &:after {
+    border-color: $secondary-color;
+  }
+}

@@ -3,9 +3,9 @@ import { FC, PropsWithChildren, ReactNode } from 'react';
 import { GAME_RESULT } from '@/constants/gameResult';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useGameStatus } from '@/hooks/useGameStatus';
-import { PropsWithTestId } from '@/types/utils';
 import clsx from 'clsx';
 
+import { FadeInOut } from '@/components/FadeInOut/FadeInOut';
 import RollingPicker from '@/components/RollingPickerOptions/RollingPickerOptions';
 
 import {
@@ -19,39 +19,44 @@ import { CandidatesService } from '@/services/CandidatesService';
 
 import s from './GameOutline.module.scss';
 
-const Outline: FC<
-  PropsWithChildren<PropsWithTestId<{ title?: ReactNode; className?: string }>>
-> = ({ className, title, children, testId }) => {
-  return (
-    <div className={s.wrapper} data-testid={testId}>
+const Outline: FC<PropsWithChildren<{ title?: ReactNode; className?: string; id: string }>> = ({
+  className,
+  title,
+  children,
+  id,
+}) => (
+  <FadeInOut key={id}>
+    <div className={s.wrapper} data-testid={id}>
       {title && <h2 className={clsx('h2', className)}>{title}</h2>}
       {children}
     </div>
-  );
-};
+  </FadeInOut>
+);
 
 const GameOutline = () => {
-  const { inProgress, finished } = useGameStatus();
-
   const playerCandidate = useAppSelector(gamePlayerCandidateSelector);
   const computerCandidate = useAppSelector(gameComputerCandidateSelector);
   const gameResult = useAppSelector(gameResultSelector);
   const playerWin = useAppSelector(gameWinValueSelector);
+
+  const { inProgress, finished } = useGameStatus();
 
   if (inProgress && computerCandidate) {
     return (
       <Outline
         title={
           <>
-            <div style={{ width: '230px' }}>{playerCandidate}</div>
-            <span style={{ position: 'relative', top: -5 }}>vs</span>
-            <RollingPicker
-              options={CandidatesService.getGameCandidates()}
-              picked={computerCandidate}
-            />
+            <div className={s.candidateName}>{playerCandidate}</div>
+            <span className={s.versusLabel}>vs</span>
+            <div className={s.candidateName}>
+              <RollingPicker
+                options={CandidatesService.getGameCandidates()}
+                picked={computerCandidate}
+              />
+            </div>
           </>
         }
-        testId="in-progress-outline"
+        id="in-progress-outline"
         className={s.candidatesLine}
       />
     );
@@ -62,15 +67,15 @@ const GameOutline = () => {
       <Outline
         title={`${playerCandidate} WIN`}
         className={clsx(s.winLine, s[playerCandidate])}
-        testId="player-win-outline"
+        id="player-win-outline"
       >
-        <h4 className={clsx('h4', s.playerWinLine)}>PLAYER WIN: {playerWin}</h4>
+        <h4 className={clsx('h4', s.playerWinLine)}>PLAYER WON: {playerWin}</h4>
       </Outline>
     );
   }
 
   if (finished && gameResult === GAME_RESULT.TIE) {
-    return <Outline title="TIE" className={s.tieLine} testId="tie-outline" />;
+    return <Outline title="TIE" className={s.tieLine} id="tie-outline" />;
   }
 
   if (finished && gameResult === GAME_RESULT.LOSS && computerCandidate) {
@@ -78,15 +83,15 @@ const GameOutline = () => {
       <Outline
         title={`${computerCandidate} WIN`}
         className={s[computerCandidate]}
-        testId="computer-win-outline"
+        id="computer-win-outline"
       >
-        <h4 className="h4">COMPUTER WIN</h4>
+        <h4 className="h4">COMPUTER WON</h4>
       </Outline>
     );
   }
 
   return (
-    <Outline testId="initial-outline">
+    <Outline id="initial-outline">
       <h4 className={clsx('h4', s.pickPositionsCta)}>Pick your positions</h4>
     </Outline>
   );

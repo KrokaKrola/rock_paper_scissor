@@ -2,6 +2,7 @@ import { GAME_CONFIG } from '@/config/gameConfig';
 import { GameCandidate } from '@/constants/gameCandidates';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
 import { GAME_STATUS, GameStatus } from '@/constants/gameStatus';
+import { Nullable } from '@/types/utils';
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
 import { BetService } from '@/services/BetService';
@@ -16,8 +17,8 @@ interface GameState {
   betsWithGameResultDto: Array<BetWithGameResultDto>;
   status: GameStatus;
   winValue: number;
-  result: GameResult | null;
-  computerCandidate: GameCandidate | null;
+  result: Nullable<GameResult>;
+  computerCandidate: Nullable<GameCandidate>;
 }
 
 const GAME_SLICE_NAME = 'game';
@@ -50,7 +51,6 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
     handleGameStart: (state) => {
       state.status = GAME_STATUS.IN_PROGRESS;
       state.computerCandidate = CandidatesService.generateComputerCandidate();
-      // state.computerCandidate = 'ROCK';
 
       state.betsWithGameResultDto = BetService.calculateBetsWithGameResults(
         state.bets,
@@ -83,9 +83,6 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
       state.result = initialState.result;
       state.betsWithGameResultDto = initialState.betsWithGameResultDto;
       state.computerCandidate = initialState.computerCandidate;
-    },
-    handleCancelBets: (state) => {
-      state.bets = initialState.bets;
     },
   },
 });

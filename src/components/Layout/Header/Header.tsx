@@ -19,12 +19,12 @@ const StatisticItem: FC<PropsWithTestId<{ label: string; value: number }>> = ({
   testId,
 }) => {
   return (
-    <p className={s.element} data-testid={testId}>
+    <div className={s.element} data-testid={testId}>
       {label}:{' '}
       <span>
         <AnimatedNumber animateToNumber={value} />
       </span>
-    </p>
+    </div>
   );
 };
 

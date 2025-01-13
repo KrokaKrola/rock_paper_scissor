@@ -15,6 +15,7 @@ interface CandidateCardProps {
   onClick: (candidate: GameCandidate) => void;
   betValue: number;
   isWinner?: boolean;
+  isGameInProgress?: boolean;
 }
 
 const CandidateCard: FC<PropsWithTestId<CandidateCardProps>> = ({
@@ -24,6 +25,7 @@ const CandidateCard: FC<PropsWithTestId<CandidateCardProps>> = ({
   disabled,
   isWinner,
   testId,
+  isGameInProgress,
 }) => {
   const handleClick = () => {
     onClick(candidate);
@@ -33,13 +35,17 @@ const CandidateCard: FC<PropsWithTestId<CandidateCardProps>> = ({
     <motion.button
       type="button"
       disabled={disabled}
-      className={clsx(s.wrapper, s[candidate], { [s.disabled]: disabled, [s.winner]: isWinner })}
+      className={clsx(s.wrapper, s[candidate], {
+        [s.disabled]: disabled,
+        [s.winner]: isWinner,
+        [s.gameInProcess]: isGameInProgress,
+      })}
       onClick={handleClick}
       data-testid={testId}
       whileTap={{ scale: 1.07, opacity: 1 }}
     >
       <BetValue value={betValue} />
-      <span className={s.label}>{candidate}</span>
+      <span className="label">{candidate}</span>
     </motion.button>
   );
 };

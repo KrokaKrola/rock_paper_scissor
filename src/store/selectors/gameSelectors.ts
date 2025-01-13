@@ -3,29 +3,29 @@ import { AppState } from '@/store/store';
 import { BetService } from '@/services/BetService';
 import { CandidatesService } from '@/services/CandidatesService';
 
-const gameBalanceSelector = (state: AppState) => state.game.balance;
+const gameBalanceSelector = ({ game }: AppState) => game.balance;
 
-const gameBetsSelector = (state: AppState) => state.game.bets;
+const gameBetsSelector = ({ game }: AppState) => game.bets;
 
-const gameTotalBetValueSelector = (state: AppState) =>
-  BetService.calculateTotalBetValue(state.game.bets);
+const gameTotalBetValueSelector = ({ game }: AppState) =>
+  BetService.calculateTotalBetValue(game.bets);
 
-const gameWinValueSelector = (state: AppState) => state.game.winValue;
+const gameWinValueSelector = ({ game }: AppState) => game.winValue;
 
-const gameStatusSelector = (state: AppState) => state.game.status;
+const gameStatusSelector = ({ game }: AppState) => game.status;
 
-const gamePlayerCandidateSelector = (state: AppState) =>
-  CandidatesService.getPlayerCandidate(state.game.betsWithGameResultDto);
+const gamePlayerCandidateSelector = ({ game }: AppState) =>
+  CandidatesService.getPlayerCandidate(game.betsWithGameResultDto);
 
-const gameComputerCandidateSelector = (state: AppState) => state.game.computerCandidate;
+const gameComputerCandidateSelector = ({ game }: AppState) => game.computerCandidate;
 
-const gameResultSelector = (state: AppState) => state.game.result;
+const gameResultSelector = ({ game }: AppState) => game.result;
 
-const gameWinnerCandidateSelector = (state: AppState) => {
+const gameWinnerCandidateSelector = ({ game }: AppState) => {
   return CandidatesService.getWinnerCandidate(
-    state.game.result,
-    state.game.computerCandidate,
-    state.game.betsWithGameResultDto,
+    game.result,
+    game.computerCandidate,
+    game.betsWithGameResultDto,
   );
 };
 

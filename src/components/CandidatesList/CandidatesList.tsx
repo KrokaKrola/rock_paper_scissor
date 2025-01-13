@@ -2,6 +2,7 @@ import { GameCandidate } from '@/constants/gameCandidates';
 import { useAllowedToBetCandidates } from '@/hooks/useAllowedToBetCandidates';
 import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { useGameStatus } from '@/hooks/useGameStatus';
 
 import { CandidateCard } from '@/components/CandidateCard/CandidateCard';
 
@@ -14,14 +15,14 @@ const CandidatesList = () => {
   const dispatch = useAppDispatch();
 
   const bets = useAppSelector(gameBetsSelector);
+  const gameWinnerCandidate = useAppSelector(gameWinnerCandidateSelector);
 
   const allowedToBetCandidates = useAllowedToBetCandidates();
+  const { inProgress, finished } = useGameStatus();
 
   const handleCandidateCardClick = (candidate: GameCandidate) => {
     dispatch(gameSliceActions.handleAddBet(candidate));
   };
-
-  const gameWinnerCandidate = useAppSelector(gameWinnerCandidateSelector);
 
   return (
     <div className={s.wrapper}>
@@ -34,6 +35,7 @@ const CandidatesList = () => {
           isWinner={bet.candidate === gameWinnerCandidate}
           testId={`${bet.candidate}-card`}
           disabled={!allowedToBetCandidates.includes(bet.candidate)}
+          isGameInProgress={inProgress || finished}
         />
       ))}
     </div>

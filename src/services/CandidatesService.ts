@@ -1,6 +1,7 @@
 import { GAME_CONFIG } from '@/config/gameConfig';
 import { GAME_CANDIDATES, GameCandidate } from '@/constants/gameCandidates';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
+import { Nullable } from '@/types/utils';
 import { getRandomInt } from '@/utils/numbers/getRandomInteger';
 
 import { BetWithGameResultDto } from '@/services/dtos/betWithGameResult';
@@ -12,7 +13,7 @@ class CandidatesService {
 
   public static getPlayerCandidate(
     betsWithGameResults: Array<BetWithGameResultDto>,
-  ): GameCandidate | null {
+  ): Nullable<GameCandidate> {
     if (betsWithGameResults.length === 1) {
       return betsWithGameResults[0].candidate;
     }
@@ -61,10 +62,10 @@ class CandidatesService {
   }
 
   static getWinnerCandidate(
-    result: GameResult | null,
-    computerCandidate: GameCandidate | null,
+    result: Nullable<GameResult>,
+    computerCandidate: Nullable<GameCandidate>,
     betsWithGameResultDto: Array<BetWithGameResultDto>,
-  ): GameCandidate | null {
+  ): Nullable<GameCandidate> {
     if (result === GAME_RESULT.TIE) {
       return null;
     }

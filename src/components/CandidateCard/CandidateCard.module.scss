@@ -1,4 +1,5 @@
 @use 'sass:color';
+@use '@/styles/mixins' as *;
 
 .wrapper {
   width: 20rem;
@@ -7,18 +8,23 @@
   justify-content: center;
   align-items: flex-end;
   padding: 1.5rem 2rem;
-  background: #356f1b;
   border-radius: 8px;
   position: relative;
   opacity: 0.93;
   transition: opacity 0.25s ease-in;
+
+  :global(.label) {
+    font-size: 3rem;
+    text-transform: uppercase;
+    color: var(--text-color-main);
+  }
 
   &:after {
     content: '';
     position: absolute;
     width: 100%;
     height: 100%;
-    border: 3px solid color.adjust(#356f1b, $lightness: 15%);
+    border: 3px solid;
     top: 0;
     left: 0;
     bottom: 0;
@@ -31,6 +37,10 @@
 .disabled {
   pointer-events: none;
   opacity: 0.6;
+
+  &.gameInProcess {
+    opacity: 1;
+  }
 }
 
 .winner {
@@ -39,44 +49,14 @@
   }
 }
 
-.label {
-  font-size: 3rem;
-  text-transform: uppercase;
-  color: var(--text-color-main);
-}
-
 .ROCK {
-  background: var(--rock-main-color);
-
-  .label {
-    color: var(--rock-secondary-color);
-  }
-
-  &:after {
-    border-color: var(--rock-secondary-color);
-  }
+  @include candidate-card-coloring(var(--rock-main-color), var(--rock-secondary-color));
 }
 
 .PAPER {
-  background: var(--paper-main-color);
-
-  .label {
-    color: var(--paper-secondary-color);
-  }
-
-  &:after {
-    border-color: var(--paper-secondary-color);
-  }
+  @include candidate-card-coloring(var(--paper-main-color), var(--paper-secondary-color));
 }
 
 .SCISSORS {
-  background: var(--scissors-main-color);
-
-  .label {
-    color: var(--scissors-secondary-color);
-  }
-
-  &:after {
-    border-color: var(--scissors-secondary-color);
-  }
+  @include candidate-card-coloring(var(--scissors-main-color), var(--scissors-secondary-color));
 }

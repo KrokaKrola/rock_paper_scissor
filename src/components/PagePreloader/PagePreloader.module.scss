@@ -1,0 +1,27 @@
+@use '@/styles/mixins' as *;
+
+.wrapper {
+  @include center-flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--black);
+  color: var(--white);
+  z-index: 1000;
+
+  h1 {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+}
+
+.primaryText {
+  color: var(--white);
+}
+
+.secondaryText {
+  color: var(--text-color-main);
+}

@@ -14,12 +14,12 @@ const BetValue: FC<BetValueProps> = ({ value }) => {
     <AnimatePresence>
       {!!value && value > 0 && (
         <motion.span
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0.7, translateY: 5 }}
+          initial={{ opacity: 0, translateY: 10 }}
+          animate={{ opacity: 1, translateY: 0 }}
+          exit={{ opacity: 0, translateY: 10 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className={clsx(s.wrapper, {
             [s.medium]: value.toString().length >= 4 && value.toString().length < 6,
-            // [s.small]: valueLength >= 6,
           })}
         >
           {value}
