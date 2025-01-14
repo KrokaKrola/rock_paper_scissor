@@ -1,0 +1,15 @@
+.wrapper {
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.btnPlaceholder {
+  height: 9rem;
+}

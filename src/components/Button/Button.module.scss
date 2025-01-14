@@ -3,9 +3,8 @@
 .wrapper {
   @include center-flex;
   background: var(--black);
-  margin-top: 10rem;
   height: 9rem;
-  min-width: 28rem;
+  min-width: 30rem;
   font-size: 4rem;
   color: var(--text-color-main);
   border-radius: 5rem;
@@ -14,7 +13,7 @@
   text-transform: uppercase;
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.6 !important;
     pointer-events: none;
   }
 }

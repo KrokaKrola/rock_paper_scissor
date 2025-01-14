@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import { GameCandidate } from '@/constants/gameCandidates';
+import { useIsTestEnv } from '@/hooks/useIsTestEnv';
 import { motion, useAnimation } from 'framer-motion';
 
 import s from './RollingPickerOptions.module.scss';
@@ -18,6 +19,7 @@ const RollingPicker: FC<RollingPickerProps> = ({
   picked,
   itemHeight = DEFAULT_ITEM_HEIGHT,
 }) => {
+  const isTestEnv = useIsTestEnv();
   const controls = useAnimation();
   const [extendedOptions, setExtendedOptions] = useState<string[]>([]);
 
@@ -41,6 +43,27 @@ const RollingPicker: FC<RollingPickerProps> = ({
   }, [extendedOptions, picked, controls, itemHeight]);
 
   const heightValue = `${itemHeight}px`;
+
+  if (isTestEnv) {
+    return (
+      <div
+        className={s.wrapper}
+        style={{
+          height: heightValue,
+        }}
+      >
+        <div
+          className={s.rollerItem}
+          style={{
+            height: heightValue,
+            lineHeight: heightValue,
+          }}
+        >
+          {picked}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

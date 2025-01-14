@@ -12,7 +12,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: ROUTES.HOME,
-        element: <Home />,
+        element: <Home withPagePreloader />,
       },
       {
         path: ROUTES.WILDCARD,

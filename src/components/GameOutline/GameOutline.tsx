@@ -2,6 +2,7 @@ import { FC, PropsWithChildren, ReactNode } from 'react';
 
 import { GAME_RESULT } from '@/constants/gameResult';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { useGameResultSound } from '@/hooks/useGameResultSound';
 import { useGameStatus } from '@/hooks/useGameStatus';
 import clsx from 'clsx';
 
@@ -40,6 +41,8 @@ const GameOutline = () => {
   const playerWin = useAppSelector(gameWinValueSelector);
 
   const { inProgress, finished } = useGameStatus();
+
+  useGameResultSound();
 
   if (inProgress && computerCandidate) {
     return (

@@ -13,6 +13,10 @@
   opacity: 0.93;
   transition: opacity 0.25s ease-in;
 
+  &:hover:not(:disabled) {
+    opacity: 1;
+  }
+
   :global(.label) {
     font-size: 3rem;
     text-transform: uppercase;

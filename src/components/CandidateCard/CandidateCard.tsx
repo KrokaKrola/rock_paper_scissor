@@ -1,6 +1,7 @@
 import { FC } from 'react';
 
 import { GameCandidate } from '@/constants/gameCandidates';
+import { useAppSound } from '@/hooks/useAppSound';
 import { PropsWithTestId } from '@/types/utils';
 import clsx from 'clsx';
 import { motion } from 'motion/react';
@@ -27,7 +28,10 @@ const CandidateCard: FC<PropsWithTestId<CandidateCardProps>> = ({
   testId,
   isGameInProgress,
 }) => {
+  const { chipSound } = useAppSound();
+
   const handleClick = () => {
+    chipSound.play();
     onClick(candidate);
   };
 
@@ -42,7 +46,7 @@ const CandidateCard: FC<PropsWithTestId<CandidateCardProps>> = ({
       })}
       onClick={handleClick}
       data-testid={testId}
-      whileTap={{ scale: 1.07, opacity: 1 }}
+      whileTap={{ scale: 1.07 }}
     >
       <BetValue value={betValue} />
       <span className="label">{candidate}</span>

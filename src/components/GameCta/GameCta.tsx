@@ -1,53 +1,50 @@
-import { useAppDispatch } from '@/hooks/useAppDispatch';
 import { useAppSelector } from '@/hooks/useAppSelector';
+import { useGameControls } from '@/hooks/useGameControls';
 import { useGameStatus } from '@/hooks/useGameStatus';
 
 import { Button } from '@/components/Button/Button';
 
 import { gameTotalBetValueSelector } from '@/store/selectors/gameSelectors';
-import { gameSliceActions } from '@/store/slices/gameSlice';
 
-const ROLLING_PICKER_ANIMATION = 2500;
-const IDLE_TIME = 700;
-const ANIMATION_DURATION = ROLLING_PICKER_ANIMATION + IDLE_TIME;
+import s from './GameCta.module.scss';
 
 const GameCta = () => {
-  const dispatch = useAppDispatch();
-
   const gameTotalBet = useAppSelector(gameTotalBetValueSelector);
 
-  const { finished, inProgress } = useGameStatus();
+  const { finished, inProgress, waitingForBets } = useGameStatus();
 
-  const handleGameReset = () => {
-    dispatch(gameSliceActions.handleResetGame());
-  };
-
-  const handlePlayClick = () => {
-    dispatch(gameSliceActions.handleGameStart());
-
-    setTimeout(() => {
-      dispatch(gameSliceActions.handleFinishGame());
-    }, ANIMATION_DURATION);
-  };
+  const { handleCancelBets, handleStartGame, handleResetGame } = useGameControls();
 
   if (finished) {
     return (
-      <Button testId="reset-game" type="button" onClick={handleGameReset} withAnimation>
-        Reset
-      </Button>
+      <div className={s.wrapper}>
+        <Button testId="reset-game" type="button" onClick={handleResetGame} withAnimation>
+          Reset
+        </Button>
+        <div className={s.btnPlaceholder} />
+      </div>
     );
   }
 
   return (
-    <Button
-      data-testid="play-game"
-      type="button"
-      disabled={gameTotalBet === 0 || inProgress}
-      withAnimation
-      onClick={handlePlayClick}
-    >
-      Play
-    </Button>
+    <div className={s.wrapper}>
+      <Button
+        testId="play-game"
+        type="button"
+        disabled={gameTotalBet === 0 || inProgress}
+        withAnimation
+        onClick={handleStartGame}
+      >
+        Play
+      </Button>
+      <div className={s.btnPlaceholder}>
+        {gameTotalBet > 0 && waitingForBets && (
+          <Button testId="cancel-bet" type="button" withAnimation onClick={handleCancelBets}>
+            Cancel
+          </Button>
+        )}
+      </div>
+    </div>
   );
 };
 

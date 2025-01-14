@@ -84,6 +84,9 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
       state.betsWithGameResultDto = initialState.betsWithGameResultDto;
       state.computerCandidate = initialState.computerCandidate;
     },
+    handleCancelBets: (state) => {
+      state.bets = initialState.bets;
+    },
   },
 });
 

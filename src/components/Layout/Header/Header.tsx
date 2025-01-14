@@ -4,6 +4,7 @@ import { useAppSelector } from '@/hooks/useAppSelector';
 import { PropsWithTestId } from '@/types/utils';
 
 import { AnimatedNumber } from '@/components/AnimatedNumber/AnimatedNumber';
+import { VolumeSwitcher } from '@/components/VolumeSwitcher/VolumeSwitcher';
 
 import {
   gameBalanceSelector,
@@ -38,6 +39,7 @@ const Header = () => {
       <StatisticItem testId="balance" label="BALANCE" value={gameBalance - betValue} />
       <StatisticItem testId="bet" label="BET" value={betValue} />
       <StatisticItem testId="win" label="WIN" value={winValue} />
+      <VolumeSwitcher className={s.volumeSwitcher} />
     </header>
   );
 };
