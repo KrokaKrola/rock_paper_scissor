@@ -7,6 +7,7 @@ import { useGameStatus } from '@/hooks/useGameStatus';
 import clsx from 'clsx';
 
 import { FadeInOut } from '@/components/FadeInOut/FadeInOut';
+import { FixedPointNumber } from '@/components/FixedPointNumber/FixedPointNumber';
 import RollingPicker from '@/components/RollingPickerOptions/RollingPickerOptions';
 
 import {
@@ -72,7 +73,9 @@ const GameOutline = () => {
         className={clsx(s.winLine, s[playerCandidate])}
         id="player-win-outline"
       >
-        <h4 className={clsx('h4', s.playerWinLine)}>PLAYER WON: {playerWin}</h4>
+        <h4 className={clsx('h4', s.playerWinLine)}>
+          PLAYER WON: <FixedPointNumber number={playerWin} precision={2} />
+        </h4>
       </Outline>
     );
   }

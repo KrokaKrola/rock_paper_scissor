@@ -3,6 +3,8 @@ import { FC } from 'react';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'motion/react';
 
+import { FixedPointNumber } from '@/components/FixedPointNumber/FixedPointNumber';
+
 import s from './BetValue.module.scss';
 
 interface BetValueProps {
@@ -10,6 +12,8 @@ interface BetValueProps {
 }
 
 const BetValue: FC<BetValueProps> = ({ value }) => {
+  const valueLength = value?.toString().length;
+
   return (
     <AnimatePresence>
       {!!value && value > 0 && (
@@ -19,10 +23,11 @@ const BetValue: FC<BetValueProps> = ({ value }) => {
           exit={{ opacity: 0, translateY: 10 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
           className={clsx(s.wrapper, {
-            [s.medium]: value.toString().length >= 4 && value.toString().length < 6,
+            [s.medium]: valueLength && valueLength >= 4 && valueLength < 6,
+            [s.small]: valueLength && valueLength >= 6,
           })}
         >
-          {value}
+          <FixedPointNumber number={value} precision={2} />
         </motion.span>
       )}
     </AnimatePresence>

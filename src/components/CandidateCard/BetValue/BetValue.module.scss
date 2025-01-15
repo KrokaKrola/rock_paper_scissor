@@ -5,7 +5,7 @@
   position: absolute;
   border-radius: 50%;
   top: 2rem;
-  border: 4px solid blue;
+  border: 4px solid var(--chip-large-border-color);
   padding: 0.4rem;
   background: var(--white);
   font-size: 2rem;
@@ -17,5 +17,10 @@
 
 .medium {
   font-size: 1.5rem;
-  border-color: purple;
+  border-color: var(--chip-medium-border-color);
+}
+
+.small {
+  font-size: 1rem;
+  border-color: var(--chip-small-border-color);
 }

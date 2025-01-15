@@ -14,15 +14,18 @@ interface Props {
   className?: string;
   animateToNumber: number;
   transitions?: (index: number) => Transition;
+  precision?: number;
 }
 
-const AnimatedNumber = ({ className, animateToNumber, transitions }: Props) => {
+const AnimatedNumber = ({ className, animateToNumber, transitions, precision = 2 }: Props) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const isTestEnv = useIsTestEnv();
 
   const controls = useAnimation();
-  const animateToNumberString = String(Math.abs(animateToNumber));
+  const animateToNumberString = animateToNumber.toString().includes('.')
+    ? animateToNumber.toFixed(precision)
+    : animateToNumber.toString();
   const animateToNumbersArr = Array.from(animateToNumberString, Number).map((x, idx) =>
     isNaN(x) ? animateToNumberString[idx] : x,
   );
