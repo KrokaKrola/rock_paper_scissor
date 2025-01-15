@@ -1,4 +1,4 @@
-import { GAME_CONFIG } from '@/config/gameConfig';
+import { AppConfig } from '@/config/AppConfig';
 import { GAME_CANDIDATES, GameCandidate } from '@/constants/gameCandidates';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
 import { Nullable } from '@/types/utils';
@@ -45,7 +45,7 @@ class CandidatesService {
       return GAME_RESULT.TIE;
     }
 
-    const winners = GAME_CONFIG.gameCandidatesWinningMap[userCandidate];
+    const winners = AppConfig.gameCandidatesWinningMap[userCandidate];
 
     if (winners.includes(computerCandidate)) {
       return GAME_RESULT.WIN;

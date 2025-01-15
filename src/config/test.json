@@ -1,0 +1,15 @@
+{
+	"initialBalance": 5000,
+	"betValue": 500,
+	"winningRates": {
+		"1": 14,
+		"2": 3
+	},
+	"gameCandidatesWinningMap": {
+		"ROCK": ["SCISSORS"],
+		"PAPER": ["ROCK"],
+		"SCISSORS": ["PAPER"]
+	},
+	"maximumSimultaneousCandidates": 2,
+	"maximumBetValue": 10000
+}

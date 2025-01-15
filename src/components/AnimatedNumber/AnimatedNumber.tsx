@@ -100,7 +100,7 @@ const AnimatedNumber = ({ className, animateToNumber, transitions, precision = 2
         </div>
       )}
 
-      <div ref={numberDivRef} style={{ position: 'absolute', top: -1000 }}>
+      <div ref={numberDivRef} className={s.emptyValue}>
         {0}
       </div>
     </span>

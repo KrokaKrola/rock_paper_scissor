@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { GAME_CONFIG } from '@/config/gameConfig';
+import { AppConfig } from '@/config/AppConfig';
 import { GAME_CANDIDATES } from '@/constants/gameCandidates';
 import { useAppSelector } from '@/hooks/useAppSelector';
 import { useGameStatus } from '@/hooks/useGameStatus';
@@ -20,13 +20,13 @@ const useAllowedToBetCandidates = () => {
       return [];
     }
 
-    if (BetService.calculateTotalBetValue(bets) + GAME_CONFIG.betValue > balance) {
+    if (BetService.calculateTotalBetValue(bets) + AppConfig.betValue > balance) {
       return [];
     }
 
     const candidatesWithBets = BetService.getBetsWithValues(bets);
 
-    if (candidatesWithBets.length === GAME_CONFIG.maximumSimultaneousCandidates) {
+    if (candidatesWithBets.length === AppConfig.maximumSimultaneousCandidates) {
       return candidatesWithBets.map((element) => element.candidate);
     }
 

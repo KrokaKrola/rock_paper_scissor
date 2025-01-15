@@ -1,4 +1,4 @@
-import { GAME_CONFIG } from '@/config/gameConfig';
+import { AppConfig } from '@/config/AppConfig';
 import { GameCandidate } from '@/constants/gameCandidates';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
 import { GAME_STATUS, GameStatus } from '@/constants/gameStatus';
@@ -24,7 +24,7 @@ interface GameState {
 const GAME_SLICE_NAME = 'game';
 
 const initialState: GameState = {
-  balance: GAME_CONFIG.initialBalance,
+  balance: AppConfig.initialBalance,
   bets: CandidatesService.getGameCandidates().map((candidate) => ({
     candidate,
     value: 0,
@@ -45,7 +45,7 @@ const { reducer: gameSliceReducer, actions: gameSliceActions } = createSlice({
 
       state.bets[betCandidateIdx] = {
         ...state.bets[betCandidateIdx],
-        value: state.bets[betCandidateIdx].value + GAME_CONFIG.betValue,
+        value: state.bets[betCandidateIdx].value + AppConfig.betValue,
       };
     },
     handleGameStart: (state) => {

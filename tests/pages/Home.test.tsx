@@ -1,4 +1,4 @@
-import { GAME_CONFIG } from '@/config/gameConfig';
+import { AppConfig } from '@/config/AppConfig';
 import { GAME_CANDIDATES } from '@/constants/gameCandidates';
 import { act, fireEvent } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
@@ -31,11 +31,9 @@ describe('Home', () => {
 
       fireEvent.click(res.getByTestId(testIds.rock));
 
-      expect(res.getByTestId(testIds.betLabel).textContent).toEqual(
-        GAME_CONFIG.betValue.toString(),
-      );
+      expect(res.getByTestId(testIds.betLabel).textContent).toEqual(AppConfig.betValue.toString());
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance - GAME_CONFIG.betValue).toString(),
+        (AppConfig.initialBalance - AppConfig.betValue).toString(),
       );
     });
 
@@ -46,10 +44,10 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.paper));
 
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual(
-        (GAME_CONFIG.betValue * 2).toString(),
+        (AppConfig.betValue * 2).toString(),
       );
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance - GAME_CONFIG.betValue * 2).toString(),
+        (AppConfig.initialBalance - AppConfig.betValue * 2).toString(),
       );
     });
 
@@ -70,7 +68,7 @@ describe('Home', () => {
       }
 
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual(
-        GAME_CONFIG.initialBalance.toString(),
+        AppConfig.initialBalance.toString(),
       );
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual('0');
 
@@ -88,7 +86,7 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.cancelBet));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        GAME_CONFIG.initialBalance.toString(),
+        AppConfig.initialBalance.toString(),
       );
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual('0');
     });
@@ -123,7 +121,7 @@ describe('Home', () => {
         vi.runAllTimers();
       });
 
-      const winValue = GAME_CONFIG.betValue * GAME_CONFIG.winningRates[1];
+      const winValue = AppConfig.betValue * AppConfig.winningRates[1];
 
       expect(res.getByTestId(testIds.playerWinOutline)).not.toBeNull();
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual(winValue.toString());
@@ -131,7 +129,7 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance + winValue).toString(),
+        (AppConfig.initialBalance + winValue).toString(),
       );
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual('0');
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual('0');
@@ -154,14 +152,14 @@ describe('Home', () => {
         vi.runAllTimers();
       });
 
-      const winValue = 2 * GAME_CONFIG.betValue * GAME_CONFIG.winningRates[1];
+      const winValue = 2 * AppConfig.betValue * AppConfig.winningRates[1];
 
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual(winValue.toString());
 
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance + winValue).toString(),
+        (AppConfig.initialBalance + winValue).toString(),
       );
     });
 
@@ -187,7 +185,7 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        GAME_CONFIG.initialBalance.toString(),
+        AppConfig.initialBalance.toString(),
       );
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual('0');
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual('0');
@@ -215,7 +213,7 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance - GAME_CONFIG.betValue).toString(),
+        (AppConfig.initialBalance - AppConfig.betValue).toString(),
       );
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual('0');
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual('0');
@@ -240,7 +238,7 @@ describe('Home', () => {
         vi.runAllTimers();
       });
 
-      const winValue = GAME_CONFIG.betValue * GAME_CONFIG.winningRates[2];
+      const winValue = AppConfig.betValue * AppConfig.winningRates[2];
 
       expect(res.getByTestId(testIds.playerWinOutline)).not.toBeNull();
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual(winValue.toString());
@@ -248,7 +246,7 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance + winValue - GAME_CONFIG.betValue).toString(),
+        (AppConfig.initialBalance + winValue - AppConfig.betValue).toString(),
       );
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual('0');
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual('0');
@@ -272,12 +270,12 @@ describe('Home', () => {
         vi.runAllTimers();
       });
 
-      const winValue = GAME_CONFIG.betValue * GAME_CONFIG.winningRates[2];
+      const winValue = AppConfig.betValue * AppConfig.winningRates[2];
 
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance + winValue - GAME_CONFIG.betValue * 2).toString(),
+        (AppConfig.initialBalance + winValue - AppConfig.betValue * 2).toString(),
       );
     });
 
@@ -304,7 +302,7 @@ describe('Home', () => {
       fireEvent.click(res.getByTestId(testIds.resetGame));
 
       expect(res.getByTestId(testIds.balanceLabel).textContent).toEqual(
-        (GAME_CONFIG.initialBalance - GAME_CONFIG.betValue * 2).toString(),
+        (AppConfig.initialBalance - AppConfig.betValue * 2).toString(),
       );
       expect(res.getByTestId(testIds.betLabel).textContent).toEqual('0');
       expect(res.getByTestId(testIds.winLabel).textContent).toEqual('0');

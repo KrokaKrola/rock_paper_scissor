@@ -1,4 +1,4 @@
-import { GAME_CONFIG } from '@/config/gameConfig';
+import { AppConfig } from '@/config/AppConfig';
 import { GAME_RESULT, GameResult } from '@/constants/gameResult';
 
 import { BetService } from '@/services/BetService';
@@ -22,7 +22,7 @@ class GameService {
       betValue = BetService.calculateTotalBetByGameResult(betsWithGameResults, GAME_RESULT.WIN);
     }
 
-    const multiplier = GAME_CONFIG.winningRates[betsWithGameResults.length];
+    const multiplier = AppConfig.winningRates[betsWithGameResults.length];
 
     return betValue * multiplier;
   }
