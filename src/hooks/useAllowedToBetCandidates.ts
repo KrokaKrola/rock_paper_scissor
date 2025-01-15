@@ -20,7 +20,7 @@ const useAllowedToBetCandidates = () => {
       return [];
     }
 
-    if (BetService.calculateTotalBetValue(bets) >= balance) {
+    if (BetService.calculateTotalBetValue(bets) + GAME_CONFIG.betValue > balance) {
       return [];
     }
 
