@@ -48,8 +48,6 @@ Here are this list of available options
   - key-value pares, where key is candidate and value is the list of elements that current key-candidate wins
 - maximumSimultaneousCandidates
   - maximum number of candidates that user can select in a single game
-- maximumBetValue 
-  - maximum bet per single candidate
 
 ### Notes
 

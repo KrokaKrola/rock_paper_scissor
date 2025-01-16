@@ -22,10 +22,6 @@ const applyConfig = (env: 'DEV' | 'TEST') => {
     AppConfig.initialBalance = devConfig.initialBalance;
   }
 
-  if (devConfig.maximumBetValue) {
-    AppConfig.maximumBetValue = devConfig.maximumBetValue;
-  }
-
   if (devConfig.winningRates) {
     AppConfig.winningRates = devConfig.winningRates;
   }

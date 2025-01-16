@@ -11,5 +11,4 @@
 		"SCISSORS": ["PAPER"]
 	},
 	"maximumSimultaneousCandidates": 2,
-	"maximumBetValue": 10000
 }

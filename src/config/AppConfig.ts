@@ -18,8 +18,6 @@ class AppConfig {
 
   private static _maximumSimultaneousCandidates: number = 2;
 
-  private static _maximumBetValue: number = 10_000;
-
   public static get initialBalance(): number {
     return this._initialBalance;
   }
@@ -58,14 +56,6 @@ class AppConfig {
 
   public static set maximumSimultaneousCandidates(value: number) {
     this._maximumSimultaneousCandidates = value;
-  }
-
-  public static get maximumBetValue(): number {
-    return this._maximumBetValue;
-  }
-
-  public static set maximumBetValue(value: number) {
-    this._maximumBetValue = value;
   }
 }
 
