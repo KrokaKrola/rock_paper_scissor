@@ -27,6 +27,41 @@ The app is a scissors, rock, paper game, with the ability to bet on the winning 
 
 NB please keep in mind that Title ROCK vs PAPER on the second screen means “computer choice ROCK versus player choice PAPER” — not ROCK bet vs PAPER bet.
 
+## Available Scripts
+
+This project provides a set of npm scripts for development, building, and maintaining the codebase. Below is an overview of the available scripts:
+
+- **`dev`**  
+  Starts the development server using Vite.
+  ```bash
+  npm run dev
+  ```
+- **`preview`**
+  Previews the production build locally.
+  ```bash
+  npm run preview
+  ```
+- **`build`**
+  Compiles the TypeScript files and builds the project using Vite.
+  ```bash
+  npm run build
+  ```
+- **`lint`**
+  Lints the src directory with ESLint, enforcing zero warnings.
+  ```bash
+  npm run lint
+  ```
+- **`format`**
+  Formats the code in the src directory using Prettier and logs warnings if applicable.
+  ```bash
+  npm run format
+  ```
+- **`test`**
+  Runs the test suite using Vitest.
+  ```bash
+  npm run test
+  ``` 
+
 ## GAME CONFIG
 
 You are able to edit some configurations of the app
